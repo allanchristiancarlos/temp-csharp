@@ -1,9 +1,10 @@
-﻿using System.Net.Http;
+﻿using System.Configuration;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Temp.Exceptions;
-using Temp.TemperatureServices;
+using Temp.Exceptions;
 
 
 namespace Temp.Tests
@@ -16,7 +17,7 @@ namespace Temp.Tests
         {
             Task.Run(async () =>
             {
-                var service = new TemperatureService(new OpenWeatherTemperatureService("be1fcf9c172f8dea5d663ccbde94dbe2"));
+                var service = new TemperatureService(new OpenWeatherTemperatureService(ConfigurationManager.AppSettings["OpenWeatherAppId"]));
 
                 var temperature = await service.GetTemperatureAsync(90001);
 
@@ -45,11 +46,10 @@ namespace Temp.Tests
             Task.Run(async () =>
             {
                 // To test this lets just pass a wrong api endpoint url
-                var openWeather = new OpenWeatherTemperatureService("WRONG_APP_ID",
-                    "http://api.openweathermap.org/data/2.1");
+                var openWeather = new OpenWeatherTemperatureService(ConfigurationManager.AppSettings["OpenWeatherAppId"]);
                 var service = new TemperatureService(openWeather);
 
-                var temperature = await service.GetTemperatureAsync(90001);
+                var temperature = await service.GetTemperatureAsync(6212312);
             }).GetAwaiter().GetResult();
         }
     }

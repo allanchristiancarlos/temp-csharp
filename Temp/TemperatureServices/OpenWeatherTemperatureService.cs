@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Temp.Exceptions;
 
-namespace Temp.TemperatureServices
+namespace Temp.Exceptions
 {
     public class OpenWeatherTemperatureService : ITemperatureService
     {
@@ -43,16 +43,21 @@ namespace Temp.TemperatureServices
             try
             {
                 responseObject = JsonConvert.DeserializeObject<OpenWeatherResponse>(responseString);
+                Console.WriteLine(responseString);
             }
             catch (Exception)
             {
                 throw new DataUnavailableException();
             }
-            
+
+            if (responseObject == null)
+            {
+                throw new DataUnavailableException();
+            }
 
             if (!responseObject.Main.Temp.HasValue)
             {
-                throw new Exceptions.DataUnavailableException();
+                throw new DataUnavailableException();
             }
 
             return new Temperature()
@@ -67,7 +72,7 @@ namespace Temp.TemperatureServices
 
     public class OpenWeatherResponseMain
     {
-        public double? Temp { get; set; }
+        public decimal? Temp { get; set; }
     }
 
     public class OpenWeatherResponse
