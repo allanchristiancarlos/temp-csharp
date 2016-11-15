@@ -18,7 +18,7 @@ namespace Temp.TemperatureServices
         async Task<Temperature> ITemperatureService.GetTemperatureAsync(int zipCode)
         {
             var request = new HttpClient();
-            var response = await request.GetAsync(String.Format($"{ApiUrl}?zip={zipCode}&appid={_appId}"));
+            var response = await request.GetAsync(String.Format($"{ApiUrl}?zip={zipCode}&appid={_appId}&units=metric"));
             var responseString = String.Empty;
 
             if (response.IsSuccessStatusCode)
