@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Temp.Exceptions;
 using Temp.Exceptions;
+using Temp.TemperatureServices;
 
 
 namespace Temp.Tests

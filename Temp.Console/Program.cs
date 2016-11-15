@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Temp.Exceptions;
+using Temp.TemperatureServices;
 
 namespace Temp.Console
 {
@@ -14,7 +16,7 @@ namespace Temp.Console
             System.Console.WriteLine("Enter zipcode: ");
             var zipCode = System.Console.ReadLine();
 
-            var ow = new OpenWeatherTemperatureService("be1fcf9c172f8dea5d663ccbde94dbe2");
+            var ow = new OpenWeatherTemperatureService(ConfigurationManager.AppSettings["OpenWeatherAppId"]);
             var service = new TemperatureService(ow);
 
             Task.Run(async () =>

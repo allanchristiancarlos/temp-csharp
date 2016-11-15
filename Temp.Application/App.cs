@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Temp.Exceptions;
+using Temp.TemperatureServices;
 
 namespace Temp.App
 {
@@ -28,7 +29,7 @@ namespace Temp.App
 
             var zipCode = txtboxZipCode.Text;
 
-            var ow = new OpenWeatherTemperatureService(ConfigurationSettings.AppSettings["OpenWeatherAppId"]);
+            var ow = new OpenWeatherTemperatureService(ConfigurationManager.AppSettings["OpenWeatherAppId"]);
             var service = new TemperatureService(ow);
 
 

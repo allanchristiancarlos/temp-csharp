@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Temp.Exceptions;
 
-namespace Temp.Exceptions
+namespace Temp.TemperatureServices
 {
     public class OpenWeatherTemperatureService : ITemperatureService
     {
@@ -27,7 +27,6 @@ namespace Temp.Exceptions
         {
             var request = new HttpClient();
             var response = await request.GetAsync(String.Format($"{_apiUrl}?zip={zipCode}&appid={_appId}&units=metric"));
-            var responseString = String.Empty;
 
             if (!response.IsSuccessStatusCode)
             {
@@ -37,25 +36,19 @@ namespace Temp.Exceptions
                 }
             }
 
-            responseString = await response.Content.ReadAsStringAsync();
+            var responseString = await response.Content.ReadAsStringAsync();
             OpenWeatherResponse responseObject = null;
 
             try
             {
                 responseObject = JsonConvert.DeserializeObject<OpenWeatherResponse>(responseString);
-                Console.WriteLine(responseString);
             }
             catch (Exception)
             {
                 throw new DataUnavailableException();
             }
 
-            if (responseObject == null)
-            {
-                throw new DataUnavailableException();
-            }
-
-            if (!responseObject.Main.Temp.HasValue)
+            if (responseObject?.Main.Temp == null)
             {
                 throw new DataUnavailableException();
             }
