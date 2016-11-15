@@ -1,36 +1,63 @@
 ﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Temp.Exceptions;
 
 namespace Temp.TemperatureServices
 {
     public class OpenWeatherTemperatureService : ITemperatureService
     {
         private readonly string _appId;
-        private const string ApiUrl = "http://api.openweathermap.org/data/2.5/weather";
+        private readonly string _apiUrl;
 
         public OpenWeatherTemperatureService(string appId)
+            : this(appId, "http://api.openweathermap.org/data/2.5/weather")
+        {
+        }
+
+        public OpenWeatherTemperatureService(string appId, string apiUrl)
         {
             _appId = appId;
+            _apiUrl = apiUrl;
         }
 
         async Task<Temperature> ITemperatureService.GetTemperatureAsync(int zipCode)
         {
             var request = new HttpClient();
-            var response = await request.GetAsync(String.Format($"{ApiUrl}?zip={zipCode}&appid={_appId}&units=metric"));
+            var response = await request.GetAsync(String.Format($"{_apiUrl}?zip={zipCode}&appid={_appId}&units=metric"));
             var responseString = String.Empty;
 
-            if (response.IsSuccessStatusCode)
+            if (!response.IsSuccessStatusCode)
             {
-                responseString = await response.Content.ReadAsStringAsync();
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    throw new UnauthorizedException();
+                }
             }
 
-            var responseObject = JsonConvert.DeserializeObject<OpenWeatherResponse>(responseString);
+            responseString = await response.Content.ReadAsStringAsync();
+            OpenWeatherResponse responseObject = null;
+
+            try
+            {
+                responseObject = JsonConvert.DeserializeObject<OpenWeatherResponse>(responseString);
+            }
+            catch (Exception)
+            {
+                throw new DataUnavailableException();
+            }
+            
+
+            if (!responseObject.Main.Temp.HasValue)
+            {
+                throw new Exceptions.DataUnavailableException();
+            }
 
             return new Temperature()
             {
-                Temp = responseObject.Main.Temp,
+                Temp = (double)responseObject.Main.Temp,
                 Location = "",
                 ZipCode = zipCode
             };
@@ -40,7 +67,7 @@ namespace Temp.TemperatureServices
 
     public class OpenWeatherResponseMain
     {
-        public double Temp { get; set; }
+        public double? Temp { get; set; }
     }
 
     public class OpenWeatherResponse

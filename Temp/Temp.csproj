@@ -44,11 +44,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\UnauthorizedException.cs" />
     <Compile Include="ITemperatureService.cs" />
+    <Compile Include="Exceptions\DataUnavailableException.cs" />
     <Compile Include="TemperatureServices\OpenWeatherTemperatureService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Temperature.cs" />
     <Compile Include="TemperatureService.cs" />
+    <Compile Include="Exceptions\ServerError.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
