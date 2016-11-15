@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Temp.Tests", "Temp.Tests\Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Temp.Console", "Temp.Console\Temp.Console.csproj", "{4EC1AB87-4764-42D8-8477-18395EFDD07A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Temp.Application", "Temp.Application\Temp.Application.csproj", "{DBDA6014-C7C9-47B5-889D-4DFDE1627042}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Temp.App", "Temp.Application\Temp.App.csproj", "{DBDA6014-C7C9-47B5-889D-4DFDE1627042}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
