@@ -1,4 +1,4 @@
-﻿namespace Temp.Application
+﻿namespace Temp.App
 {
     partial class Form1
     {

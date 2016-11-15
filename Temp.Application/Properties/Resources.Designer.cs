@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Temp.Application.Properties
+namespace Temp.App.Properties
 {
 
 
